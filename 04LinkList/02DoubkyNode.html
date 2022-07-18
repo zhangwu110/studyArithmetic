@@ -1,0 +1,112 @@
+<!--
+ * @Author: zhangwu
+ * @Date: 2022-06-14 10:37:34
+ * @LastEditors: zhangwu
+ * @LastEditTime: 2022-06-16 11:28:54
+ * @Description: 请填写简介
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="module">
+        import { defaultEqualsFn, Node, LinkedList } from "../utils/linked-list-models.js";
+        console.log(Node);
+        class DoublyNode extends Node {
+            constructor(element, next, prev) {
+                super(element, next)
+                this.prev = prev;
+            }
+        }
+
+        class DoubleyLinkedList extends LinkedList {
+            constructor(equalFn = defaultEqualsFn) {
+                super(equalFn);
+                this.tail = undefined;
+            }
+            insert(index, element) {
+                if (index >= 0 && index <= this.count) {
+                    const node = new DoublyNode(element);
+                    const current = this.head;
+                    if (index === 0) {
+                        if (this.head == null) {
+                            this.head = node;
+                            this.tail = node;
+                        } else {
+                            // 往第一项插入  此时插入的node  prev为null  next为当前的head
+                            node.next = current;
+                            current.prev = node;
+                            this.head = node;
+
+                        }
+                    } else if (index === this.count) {
+                        // 往最后一项添加元素  此时最后一项元素的next为null  prev为原先的tail
+                        this.tail.next = node;
+                        node.prev = this.tail;
+                        this.tail = node;
+                    } else {
+                        // 往中间某个位置插入元素  需要修改当前插入元素的prev和next   以及上一个元素的next和下一个元素的prev
+                        // 先获取上一个元素     同时保存下一个元素
+                        const previous = this.getElementAt(index - 1);
+                        const current = previous.next;
+                        previous.next = node;
+                        node.prev = previous;
+                        node.next = current;
+                        current.prev = node;
+                    }
+                    this.count++;
+                    return true
+                }
+                return false
+            }
+            push(element) {
+                this.insert(this.count, element)
+            }
+            removeAt(index) {
+                if (index >= 0 && index <= this.count) {
+                    const current = this.head;
+                    if (index === 0) {
+                        //删除头部元素时，如果当前链表长度为1  则直接清空链表  否则只把当前head往后移动一位 并把head的prev置空
+                        this.head = current.next;
+                        if (this.count === 1) {
+                            this.tail = undefined
+                        } else {
+                            this.head.prev = undefined;
+                        }
+                    } else if (index === (this.count - 1)) {
+                        // 当删除最后一位时 修改tail   并把previous的next置空
+                        current = this.tail;
+                        this.tail = current.prev;
+                        this.tail.next = undefined;
+                    } else {
+                        // 删除中间某一个元素时
+                        current = this.getElementAt(index);
+                        const previous = current.prev;
+                        previous.next = current.next;
+                        current.next.prev = previous;
+
+                    }
+                    this.count--;
+                    return current.element;
+                }
+                return undefined;
+
+            }
+        }
+
+        const list = new DoubleyLinkedList();
+        list.push(2)
+        list.push(3)
+        list.push(4)
+        console.log(list);
+    </script>
+</body>
+
+</html>

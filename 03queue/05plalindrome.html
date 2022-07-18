@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>回文检查器</title>
+</head>
+
+<body>
+    <script src="./queue.js"></script>
+    <script>
+        //使用双端队列来解决问题
+        function palindromeChcker(aString = '') {
+            if (aString === null || aString === undefined) {
+                return false
+            }
+            const deQueue = new Deque();
+            lowerString = aString.toLocaleLowerCase().replace(' ','')
+            console.log(lowerString);
+            for (let i = 0; i < aString.length; i++) {
+                deQueue.addFront(lowerString.charAt(i))
+            }
+            console.log(deQueue);
+            // debugger
+            console.log(deQueue.size());
+            // while (deQueue.size() > 1) {
+            //     console.log(deQueue.size());
+            //     let a = deQueue.removeFront();
+            //     let b = deQueue.removeBack();
+            //     console.log(a,b);
+            //     if (a !== b) {
+            //         return false
+            //     }
+            // }
+            return true
+        }
+        console.log(palindromeChcker('WasSsaW'));
+    </script>
+</body>
+
+</html>

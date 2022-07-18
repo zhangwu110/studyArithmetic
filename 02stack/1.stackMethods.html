@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /**
+         * 栈的内容个主要包括(LIFO last in first out)
+         *    一  创建自己的javascript数据结构库
+         *    二  栈数据结构
+         *    三  向栈添加元素
+         *    四  移除元素
+         *    五  使用stack类
+         *    六  十进制转二进制
+        */
+
+        //一 创建一个基于数组的栈 
+        class Stack {
+            constructor() {
+                this.items = [];
+            }
+            push(element) {
+                this.items.push(element)
+            }
+            pop() {
+                return this.items.pop()
+            }
+            peek() {
+                return this.items(this.items.length - 1)
+            }
+            isEmpty() {
+                return this.items.length === 0;
+            }
+            size() {
+                return this.items.length
+            }
+            clear() {
+                this.items = []
+            }
+        }
+       //1.1   栈的方法
+        /**
+         *  push(element) 添加一个方法到栈顶
+         *  pop()   移除栈顶的元素
+         *  peek() 返回栈顶的元素，不对栈作任何的更改
+         *  isEmpty() 如果栈里没有任何元素就返回true 否则 false
+         *  clear() 清空栈中的所有元素
+         *  size() 返回栈里的元素个数
+        */
+
+    </script>
+</body>
+
+</html>

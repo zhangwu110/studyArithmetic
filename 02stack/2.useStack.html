@@ -1,0 +1,93 @@
+<!--
+ * @Author: zhangwu
+ * @Date: 2021-11-08 17:16:27
+ * @LastEditors: zhangwu
+ * @LastEditTime: 2022-06-13 11:25:01
+ * @Description: 请填写简介
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //stack 第二种js实现   item是一个对象   count用来记录长度
+        class Stack {
+            constructor() {
+                this.items = {};
+                this.count = 0;
+            }
+            push(element) {
+                this.items[this.count] = element;
+                this.count++
+            }
+            pop() {
+                if (this.isEmpty()) {
+                    return undefined;
+                }
+                this.count--;
+                const result = this.items;
+                delete this.items[this.count];
+                return result
+            }
+            peek() {
+                if (this.isEmpty()) {
+                    return undefined;
+                }
+                return this.items[this.count - 1]
+            }
+            isEmpty() {
+                return this.count === 0;
+            }
+            size() {
+                return this.count;
+            }
+            clear() {
+                this.items = {}
+                this.count = 0;
+            }
+            toString() {
+                if (this.isEmpty()) {
+                    return ''
+                }
+                let objString = this.items[0];
+                for (let i = 1; i < this.count; i++) {
+                    objString = `${objString},${this.items[i]}`
+                }
+                return objString
+            }
+        }
+
+        const stack = new Stack();
+        stack.push(1);
+        stack.push(2);
+        // console.log(stack.peek());
+        // console.log(stack.size());
+        // console.log(stack.isEmpty());
+        // console.log(stack.pop());
+        // console.log(stack.pop());
+        // console.log(stack.isEmpty());
+
+
+        function add(){
+            return new Promise((resolve,reject)=>{
+                setTimeout(() => {
+                    reject("ok")
+                }, 2000);
+            })
+        }
+        add().then(()=>{
+
+        }).catch(res=>{
+            console.log("3");
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+<!--
+ * @Author: zhangwu
+ * @Date: 2021-11-10 11:26:37
+ * @LastEditors: zhangwu
+ * @LastEditTime: 2022-06-13 13:09:32
+ * @Description: 请填写简介
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>循环队列---击鼓传花游戏</title>
+</head>
+
+<!-- 
+    在这个游戏中，孩子们会围成一个圈圈，把花尽快的传递给旁边的人，某一时刻传花
+    停止，这个时候花在谁手上，谁就退出圆圈结束游戏，重复这个过程，直到只剩一个孩子。
+
+
+
+ -->
+<body>
+    <script src="./queue.js"></script>
+    <script>
+        function hasPatato(elementsList, num) {
+            const queue = new Queue();
+            const elementedList = [];
+            for (let i = 0; i < elementsList.length; i++) {
+                queue.enqueue(elementsList[i])
+            }
+            while (queue.size() > 1) {
+                debugger
+                console.log(queue.items);
+                for (let i = 0; i < num; i++) {
+                    queue.enqueue(queue.dequeue());
+                }
+                elementedList.push(queue.dequeue())
+
+            }
+            return {
+                elementedList:elementedList,
+                winner:queue.dequeue()
+            }
+        }
+        hasPatato([1, 2, 3], 3)
+    </script>
+</body>
+
+</html>

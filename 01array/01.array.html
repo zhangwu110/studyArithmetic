@@ -1,0 +1,36 @@
+<!--
+ * @Author: zhangwu
+ * @Date: 2021-11-08 14:57:56
+ * @LastEditors: zhangwu
+ * @LastEditTime: 2022-06-13 11:20:22
+ * @Description: 请填写简介
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组</title>
+</head>
+
+<body>
+    <script>
+        // 在数组头部插入元素的原理 即 unshift原理
+        Array.prototype.insertFirstPosition = function (value) {
+            for (var i = this.length; i > 0; i--) {
+                this[i] = this[i - 1]
+                console.log('---');
+            }
+            return this[0] = value
+        }
+        //从数组末尾删除元素 即
+
+        Array.prototype.insertLastPosition1 = function (value) {
+            this.length = this.length - 1;
+        }
+    </script>
+</body>
+
+</html>

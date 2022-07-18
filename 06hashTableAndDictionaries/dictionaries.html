@@ -1,0 +1,143 @@
+<!--
+ * @Author: zhangwu
+ * @Date: 2022-06-22 17:29:44
+ * @LastEditors: zhangwu
+ * @LastEditTime: 2022-07-12 10:28:54
+ * @Description: 请填写简介
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>字典(dictionary)</title>
+</head>
+
+<body>
+    <script type="module">
+
+        /* 
+           question:  [键，值]  值为什么是对象形式的  valuePair
+        */
+        /*
+          字典
+          集合表示一组互不相同的元素（不重复的元素），以[值，值]的形式存储。
+          在字典中，存储的是键值对，[键，值]的方式存储。
+          字典也称作映射、符号表或关联数组   在计算机科学中，字典常用来保存对象的引用地址。
+
+          
+        */
+        import { defaultToString } from '../utils/linked-list-models.js';
+
+
+        class ValuePair {
+            constructor(key, value) {
+                this.key = key;
+                this.value = value;
+            }
+            toString() {
+                return `[#${this.key}:${this.value}]`
+            }
+        }
+        class Dictionary {
+            constructor(toStrFn = defaultToString) {
+                this.toStrFn = toStrFn;
+                this.table = {};
+            }
+            hasKey(key) {
+                // 有 返回true 没有返回false
+                return this.table[this.toStrFn(key)] != null
+            }
+            set(key, value) {
+                // 添加元素
+                if (key != null && value != null) {
+                    const tableKey = this.toStrFn(key);
+                    this.table[tableKey] = new ValuePair(key, value)
+                    return true;
+                }
+                return false;
+            }
+            remove(key) {
+                // 移除元素
+                if (this.hasKey(key)) {
+                    delete this.table[key];
+                    return true;
+                }
+                return false;
+            }
+            get(key) {
+                // 用键名查找元素并返回
+                const valuePair = this.table[this.toStrFn(key)];
+                return valuePair == null ? undefined : valuePair.value;
+            }
+            size() {
+                // 返回字典中数值的数量
+                return Object.keys(this.table).length;
+            }
+            clear() {
+                // 清空字典
+                this.table = {}
+            }
+            isEmpty() {
+                // size 等于0 的时候返回true 否则返回false
+                this.size() === 0;
+            }
+            keys() {
+                // 获取所有键名的数组
+                // return Object.keys(this.table);
+                // 或者
+                return this.keyValues().map(valuePair => valuePair.key)
+
+            }
+            values() {
+                return this.keyValues().map(valuePair => valuePair.value)
+            }
+            keyValues() {
+                // 获取所有键值的数组
+                return Object.values(this.table)
+            }
+            forEach(callbackFn) {
+                // 迭代字典 类似数组的foreach方法
+                const valuesPair = this.keyValues();
+                for (let i = 0; i < valuesPair.length; i++) {
+                    const element = valuesPair[i];
+                    const result = callbackFn(element.key, element.value);
+                    if (result === false) {
+                        break
+                    }
+                }
+            }
+            toString() {
+                if (this.isEmpty()) {
+                    return ""
+                };
+                var valuePairs = this.keyValues();
+                // var objString = `${valuePairs[0]}`
+                var objString = valuePairs[0].toString()
+                for (var i = 1; i < valuePairs.length; i++) {
+                    objString = `${objString},${valuePairs[i].toString()}`
+                }
+                return objString
+
+                /*
+                   以上代码与下方代码效果一样
+                */
+
+                // return `${dict.keyValues()}`   
+            }
+        }
+        const dict = new Dictionary();
+        dict.set("name", "zhangsan");
+        dict.set("age", "11");
+        console.log(dict, dict.table.name.toString());
+        console.log(dict.keyValues());
+        console.log(`${dict.keyValues()}`);
+        console.log(dict.toString(), '22');
+
+
+    </script>
+</body>
+
+</html>

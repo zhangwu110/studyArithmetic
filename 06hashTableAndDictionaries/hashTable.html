@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>散列表(hashTable)</title>
+</head>
+
+<body>
+    <!-- JavaScript 语言内部就是使用散列表来表示每个对象的 -->
+    <!-- 
+        本章主要包括
+        1.散列表  也叫作hashTable（hashMap）  它是Dictionary类的一种散列表实现方式
+        2.散列算法的作用    尽可能快的在数据结构找到一个值     
+     -->
+
+
+    <script type="module">
+        import { defaultToString, ValuePair, LinkedList } from '../utils/linked-list-models.js';
+
+
+
+        class HashTable {
+            constructor(toStrFn = defaultToString) {
+                this.toStrFn = toStrFn;
+                this.table = {};
+            }
+            // 散列函数
+            loseloseHashCode(key) {
+
+                if (typeof key === 'number') {
+                    return key;
+                }
+
+                const tableKey = this.toStrFn(key);
+                let hash = 0;
+                for (let i = 0; i < tableKey.length; i++) {
+                    hash += tableKey.charCodeAt(i);
+                }
+                return hash % 37;  //  为了的到比较小的数值  我们使用hash值和一个任意数做除法的余数    这可以规避操作数超过数值变量最大范围的风险
+            }
+
+            hashCode(key) {
+                return this.loseloseHashCode(key)
+            }
+
+            put(key, value) {
+                // 向散列表增加一个新的项 也能更新散列表
+                if (key !== null && value != null) {
+                    const position = this.hashCode(key);
+                    this.table[position] = new ValuePair(key, value);
+                    return true
+                }
+                return false;
+            }
+            remove(key) {
+                // 根据键值从散列表中移除值
+                const hash = this.hashCode(key);
+                const valuePair = this.table[hash];
+                if (valuePair != null) {
+                    delete this.table[hash];
+                    return true;
+                }
+                return false
+            }
+            get(key) {
+                // 根据键值检索到特定的值
+                const hash = this.hashCode(key);
+                const valuePair = this.table[hash];
+                return valuePair == null ? undefined : valuePair.value;
+            }
+            isEmpty() {
+                return Object.keys(this.table).length === 0;
+            }
+            toString() {
+                if (this.isEmpty()) {
+                    return ''
+                }
+                const keys = Object.keys(this.table);
+                let objString = `{${keys[0]}=>${this.table[keys[0]]}}`;
+                for (let i = 1; i < keys.length; i++) {
+                    objString = `${objString},{${keys[i]}=>${this.table[keys[i]]}}`
+                }
+                return objString
+            }
+        }
+
+        let hashTable = new HashTable();
+        hashTable.put("name", "asdfdsf");
+
+        //  如下   age 和 ega  他们的散列值相等  因此  上边age 对应的值会被下边的覆盖  hashTable.get('age')  会输出 { sex: "nv", country: "china" } 
+
+        // 这就是散列表的冲突  hash值很有可能相同  后添加的值可能覆盖先添加的  
+        // 解决该冲突主要有以下几种方法：  分离链接   线性探查   双散列法  这里介绍前两种方法
+        hashTable.put("age", 22);
+        hashTable.put("ega", { sex: "nv", country: "china" })
+        console.log(hashTable.get('age'),);
+        toString
+        console.log(hashTable.toString());
+
+
+        /*
+            一 分离链接法   分离链接法 包括为散列表的每一个位置创建一个链表  将元素储存在里面  它是解决冲突最简单的方法
+
+            对于分离链接和线性探查来说 只需要重写三个方法 put get 和 remove
+        */
+
+        class HashTableSeperateChaining extends HashTable {
+
+            put(key, value) {
+                if (key != null && value != null) {
+                    const position = this.hashCode(key);
+                    if (this.table[position] == null) {
+                        this.table[position] = new LinkedList();
+                    }
+                    this.table[position].push(new ValuePair(key, value))
+                    return true
+                }
+                return false
+            }
+
+            get(key) {
+                const element = this.getLinkListElement(key);
+                return element ? element.value : element
+
+            }
+
+            getLinkListElement(key) {
+                const position = this.hashCode(key);
+                const linkedList = this.table[position];
+                if (linkedList != null && !linkedList.isEmpty()) {
+                    let current = linkedList.getHead();
+                    while (current != null) {
+                        if (current.element.key === key) {
+                            return current.element;
+                        }
+                        current = current.next;
+                    }
+
+                }
+                return undefined
+            }
+
+            remove(key) {
+                const position = this.hashCode(key);
+                const linkedList = this.table[position];
+                const element = this.getLinkListElement(key);
+                element ? linkedList.remove(element) : delete this.table[position]
+            }
+        }
+        let hashTable1 = new HashTableSeperateChaining();
+        hashTable1.put("name", "asdfdsf");
+
+        //  如下   age 和 ega  他们的散列值相等  因此  上边age 对应的值会被下边的覆盖  hashTable.get('age')  会输出 { sex: "nv", country: "china" } 
+
+        // 这就是散列表的冲突  hash值很有可能相同  后添加的值可能覆盖先添加的  
+        // 解决该冲突主要有以下几种方法：  分离链接   线性探查   双散列法  这里介绍前两种方法
+        hashTable1.put("age", 22);
+        hashTable1.put("ega", { sex: "nv", country: "china" })
+        // console.log(hashTable1.get('ega'),);
+        // toString
+        hashTable1.remove("age")
+        console.log(hashTable1);
+
+
+        /*
+           二  线性探查    之所以称为线性  是因为他处理冲突的方法是将元素直接存储到表中，而不是单独的数据结构中
+
+           线性检查技术分为两种   第一种是软删除方法   我们使用一个特殊的值（标记）来表述键值对被删除了 而不是真的删除他
+        */
+
+
+        /*
+           第二种是     
+        
+        */
+
+        class HashTableLinearProbingLazy extends HashTable {
+            put() {
+
+            }
+            
+        }
+    </script>
+</body>
+
+</html>
