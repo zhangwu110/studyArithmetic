@@ -7,8 +7,8 @@ export class Node {
         this.element = element;
         this.next = null
     }
-}
-
+} 
+ 
 // 单向链表
 export class LinkedList {
     constructor(equalsFn = defaultEqualsFn) {
