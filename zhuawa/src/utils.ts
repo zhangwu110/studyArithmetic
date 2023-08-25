@@ -58,7 +58,9 @@ export class LinkedList {
     }
     //返回链表中特定元素的位置 不存在则返回undefined
     getElementAt(index) {
-        if (index >= 0 && index < this.count) {
+        console.log(this.count);
+        
+        if (index >= 0 && index <= this.count) {
             let node = this.head;
             for (let i = 0; i < index; i++) {
                 node = node.next
