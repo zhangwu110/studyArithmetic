@@ -1,0 +1,40 @@
+<!--
+ * @Author: zhangwu110 779054642@qq.com
+ * @Date: 2023-10-13 14:48:49
+ * @LastEditors: zhangwu110 779054642@qq.com
+ * @LastEditTime: 2023-10-13 15:24:56
+ * @Description: 
+ * 
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>合并两个有序链表</title>
+</head>
+
+<body>
+    <script type="module">
+        /**
+         * @description: 
+         * @param {*} arr1 
+         * @return {*} arr2
+         */
+        function mergeTwoArray(arr1 = [], arr2 = []) {
+            let len1 = arr1.length - 1;
+            let len2 = arr2.length - 1;
+            let len = len1 + len2 + 1
+            while (len2 >= 0) {
+                arr1[len--] = arr1[len1] > arr2[len2] ? arr1[len1--] : arr2[len2--]
+            }
+            return arr1
+        }
+        const a = [789, 222];
+        const b = [0, 2, 2, 4, 5]
+        console.log(mergeTwoArray(a, b));
+    </script>
+</body>
+
+</html>
