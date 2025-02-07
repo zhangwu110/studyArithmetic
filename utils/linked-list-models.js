@@ -52,7 +52,7 @@ export class LinkedList {
         }
         return false
     }
-    //返回链表中特定元素的位置 不存在则返回undefined
+    //返回链表中特定元素 不存在则返回undefined
     getElementAt(index) {
         if (index >= 0 && index < this.count) {
             let node = this.head;
